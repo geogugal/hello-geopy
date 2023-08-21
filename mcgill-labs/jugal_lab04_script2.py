@@ -20,8 +20,8 @@ import geopandas
 from google.colab import drive
 from geopandas import GeoDataFrame
 
-#Mount Drive for reading/writing files
-drive.mount('/content/gdrive')
+# Mount Drive for reading/writing files
+drive.mount("/content/gdrive")
 
 # Import provided land shapefile
 landshp = geopandas.read_file("/content/gdrive/My Drive/World_Land.shx")
@@ -35,8 +35,8 @@ intersect_poly = blank["geometry"].intersection(union)
 
 # Iterate over the polygons and add to the land attribute if the polygon also exists in the World_Land.shx files
 for i in range(len(intersect_poly.area)):
-  ratio = intersect_poly.area[i]/100
-  blank["land"][i] = ratio
+    ratio = intersect_poly.area[i] / 100
+    blank["land"][i] = ratio
 
 # Export new shapefile
 blank.to_file("gdrive/My Drive/test2.shp")

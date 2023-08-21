@@ -21,8 +21,8 @@ from google.colab import drive
 from geopandas import GeoDataFrame
 from shapely.geometry import Polygon
 
-#Mount Drive for reading/writing files
-drive.mount('/content/gdrive')
+# Mount Drive for reading/writing files
+drive.mount("/content/gdrive")
 
 """Create a grid of square polygons by declaring generalizable variables that will be feed into nested loops to automate creation of all 648 polygons."""
 
@@ -34,30 +34,32 @@ att = {}
 
 # Ascribing longitude values by stepping through -180 to 180 at 10 degrees each iteration
 for i in range(-180, 180, 10):
-  # latitude values by stepping through -90 to 90 at 10 degrees each iteration
-  for j in range(-90, 90, 10):
-    # For each polygon, 4 points need to be defined; + 10 indicates the delta between xmin and xmax (as well as ymin and ymax)
-    coord = [(i, j), (i+10, j), (i+10, j+10), (i, j+10)]
-    # Use coord to define a polygon
-    poly = shapely.geometry.Polygon(coord)
-    # add poly to geom list created earlier
-    geom.append(poly)
+    # latitude values by stepping through -90 to 90 at 10 degrees each iteration
+    for j in range(-90, 90, 10):
+        # For each polygon, 4 points need to be defined; + 10 indicates the delta between xmin and xmax (as well as ymin and ymax)
+        coord = [(i, j), (i + 10, j), (i + 10, j + 10), (i, j + 10)]
+        # Use coord to define a polygon
+        poly = shapely.geometry.Polygon(coord)
+        # add poly to geom list created earlier
+        geom.append(poly)
 
 # Create lists for each of the attributes we want to add to polygons
 ID = []
 land = []
 
 # Specifiy projection
-crs = ("epsg:4326")
+crs = "epsg:4326"
 
 # Add an unique ID for each polygon, as well as 0 for each polygon (since we've not added the land shape file yet)
 for i in range(648):
-  ID.append(i) # goes through and appends whatever i was to each polygon as it's unique ID
-  land.append(0.0) # note: kept as float for later ease
-  att["ID"] = ID # adding ID to the dictionary from earlier 
-  att["land"] = land # adding land to the dictionary from earlier
+    ID.append(
+        i
+    )  # goes through and appends whatever i was to each polygon as it's unique ID
+    land.append(0.0)  # note: kept as float for later ease
+    att["ID"] = ID  # adding ID to the dictionary from earlier
+    att["land"] = land  # adding land to the dictionary from earlier
 
-df = geopandas.GeoDataFrame(crs=crs, geometry = geom, data = att)
+df = geopandas.GeoDataFrame(crs=crs, geometry=geom, data=att)
 
 # Export df to drive
 df.to_file("gdrive/My Drive/test.shp")
